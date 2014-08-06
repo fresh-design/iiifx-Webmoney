@@ -1,0 +1,23 @@
+{
+    "name":"fresh-design/iiifx-webmoney",
+    "type": "library",
+    "description": "Webmoney payment",
+    "keywords": ["webmoney","pay"],
+    "homepage": "https://github.com/fresh-design/iiifx-Webmoney.git",
+    "version": "1.0.0",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Vitaliy IIIFX Khomenko",
+            "email": "iiifx@yandex.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "iiifx\\Component\\Payment\\Webmoney\\": "src/"
+        }
+    }
+}
