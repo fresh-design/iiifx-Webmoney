@@ -1,6 +1,6 @@
 <?php
 
-require_once( 'PaymentForm.php' );
+require_once( 'PaymentResponse.php' );
 
 use iiifx\Component\Payment\Webmoney\PaymentResponse;
 
