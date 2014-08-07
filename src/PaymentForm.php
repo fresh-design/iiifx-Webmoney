@@ -2,18 +2,35 @@
 
 namespace iiifx\Component\Payment\Webmoney;
 
+/**
+ * Class PaymentForm
+ *
+ * @package iiifx\Component\Payment\Webmoney
+ */
 class PaymentForm {
 
+    /**
+     * @var string
+     */
     private $webmoneyGateLink = 'https://merchant.webmoney.ru/lmi/payment.asp';
 
+    /**
+     * Режимы тестирования
+     */
     const TestingMode_AllSuccess = 0;
     const TestingMode_AllCancel = 1;
     const TestingMode_Success80Cancel20 = 2;
 
+    /**
+     * Режимы отправки ответа, по умолчанию POST
+     */
     const ResponseMethod_GET = 0;
     const ResponseMethod_POST = 1;
     const ResponseMethod_LINK = 2;
 
+    /**
+     * Доп. методы оплаты
+     */
     const EInvoicingType_MoneyTransferSystem = 0;
     const EInvoicingType_AlphaClick = 3;
     const EInvoicingType_RussianBanksCards = 4;
@@ -23,6 +40,9 @@ class PaymentForm {
     const EInvoicingType_UkraineBanksAndTerminals = 8;
     const EInvoicingType_Cards = 10;
 
+    /**
+     * Еще методы оплаты
+     */
     const AuthType_KeeperLight = 'authtype_2';
     const AuthType_WMCard = 'authtype_3';
     const AuthType_KeeperMobile = 'authtype_4';
@@ -41,23 +61,71 @@ class PaymentForm {
     const AuthType_InternetBanking = 'authtype_18';
     const AuthType_SberbankBonus = 'authtype_19';
 
+    /**
+     * @var string
+     */
     private $sellerPurse;
+    /**
+     * @var bool
+     */
     private $testingMode;
+    /**
+     * @var string
+     */
     private $formTagId;
+    /**
+     * @var bool
+     */
     private $formAutoSubmit;
+    /**
+     * @var float
+     */
     private $paymentAmount;
+    /**
+     * @var int
+     */
     private $paymentId;
+    /**
+     * @var string
+     */
     private $comment;
+    /**
+     * @var int
+     */
     private $eInvoicingType;
+    /**
+     * @var string
+     */
     private $authType;
+    /**
+     * @var string
+     */
     private $resultLink;
+    /**
+     * @var string
+     */
     private $successLink;
+    /**
+     * @var int
+     */
     private $successMethod;
+    /**
+     * @var string
+     */
     private $failLink;
+    /**
+     * @var int
+     */
     private $failMethod;
 
+    /**
+     * @var array
+     */
     private $customerValueList = array ();
 
+    /**
+     * @param string $sellerPurse
+     */
     public function __construct ( $sellerPurse ) {
         $this->setSellerPurse( $sellerPurse );
     }
@@ -66,51 +134,94 @@ class PaymentForm {
     ### Аццессоры #############################################################
     #
 
+    /**
+     * @return string
+     */
     public function getWebmoneyGateLink () {
         return $this->webmoneyGateLink;
     }
 
+    /**
+     * @param string $sellerPurse
+     *
+     * @return $this
+     */
     public function setSellerPurse ( $sellerPurse ) {
         $this->sellerPurse = strtoupper( trim( $sellerPurse ) );
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getSellerPurse () {
         return $this->sellerPurse;
     }
 
+    /**
+     * @param string $failLink
+     *
+     * @return $this
+     */
     public function setFailLink ( $failLink ) {
         $this->failLink = $failLink;
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getFailLink () {
         return $this->failLink;
     }
 
+    /**
+     * @param string $resultLink
+     *
+     * @return $this
+     */
     public function setResultLink ( $resultLink ) {
         $this->resultLink = $resultLink;
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getResultLink () {
         return $this->resultLink;
     }
 
+    /**
+     * @param string $successLink
+     *
+     * @return $this
+     */
     public function setSuccessLink ( $successLink ) {
         $this->successLink = $successLink;
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getSuccessLink () {
         return $this->successLink;
     }
 
+    /**
+     * @param int $failMethod
+     *
+     * @return $this
+     */
     public function setFailMethod ( $failMethod ) {
         $this->failMethod = $failMethod;
         return $this;
     }
 
+    /**
+     * @return int
+     */
     public function getFailMethod () {
         if ( is_null( $this->failMethod ) ) {
             $this->failMethod = self::ResponseMethod_POST;
@@ -118,11 +229,19 @@ class PaymentForm {
         return $this->failMethod;
     }
 
+    /**
+     * @param int $successMethod
+     *
+     * @return $this
+     */
     public function setSuccessMethod ( $successMethod ) {
         $this->successMethod = $successMethod;
         return $this;
     }
 
+    /**
+     * @return int
+     */
     public function getSuccessMethod () {
         if ( is_null( $this->successMethod ) ) {
             $this->successMethod = self::ResponseMethod_POST;
@@ -130,65 +249,121 @@ class PaymentForm {
         return $this->successMethod;
     }
 
+    /**
+     * @param int $testingMode
+     *
+     * @return $this
+     */
     public function setTestingMode ( $testingMode ) {
         $this->testingMode = $testingMode;
         return $this;
     }
 
+    /**
+     * @return int
+     */
     public function getTestingMode () {
         return $this->testingMode;
     }
 
+    /**
+     * @param string $authType
+     *
+     * @return $this
+     */
     public function setAuthType ( $authType ) {
         $this->authType = $authType;
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getAuthType () {
         return $this->authType;
     }
 
+    /**
+     * @param  string$comment
+     *
+     * @return $this
+     */
     public function setComment ( $comment ) {
         $this->comment = trim( $comment );
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getComment () {
         return $this->comment;
     }
 
+    /**
+     * @param int $eInvoicingType
+     *
+     * @return $this
+     */
     public function setEInvoicingType ( $eInvoicingType ) {
         $this->eInvoicingType = $eInvoicingType;
         return $this;
     }
 
+    /**
+     * @return int
+     */
     public function getEInvoicingType () {
         return $this->eInvoicingType;
     }
 
+    /**
+     * @param float $paymentAmount
+     *
+     * @return $this
+     */
     public function setPaymentAmount ( $paymentAmount ) {
         $this->paymentAmount = number_format( $paymentAmount, 2, '.', '' );
         return $this;
     }
 
+    /**
+     * @return float
+     */
     public function getPaymentAmount () {
         return $this->paymentAmount;
     }
 
+    /**
+     * @param int $paymentId
+     *
+     * @return $this
+     */
     public function setPaymentId ( $paymentId ) {
         $this->paymentId = (int) $paymentId;
         return $this;
     }
 
+    /**
+     * @return int
+     */
     public function getPaymentId () {
         return $this->paymentId;
     }
 
+    /**
+     * @param string $formTagId
+     *
+     * @return $this
+     */
     public function setFormTagId ( $formTagId ) {
         $this->formTagId = trim( $formTagId );
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getFormTagId () {
         if ( is_null( $this->formTagId ) ) {
             $this->formTagId = 'webmoney-form-' . md5( microtime() );
@@ -196,6 +371,9 @@ class PaymentForm {
         return $this->formTagId;
     }
 
+    /**
+     * @return string
+     */
     public function getBase64Comment () {
         if ( !is_null( $this->getComment() ) ) {
             return base64_encode( $this->getComment() );
@@ -203,6 +381,12 @@ class PaymentForm {
         return '';
     }
 
+    /**
+     * @param string $valueName
+     * @param string $valueData
+     *
+     * @return $this
+     */
     public function addCustomerValue ( $valueName, $valueData = NULL ) {
         if ( is_array( $valueName ) ) {
             $this->addCustomerValues( $valueName );
@@ -214,6 +398,11 @@ class PaymentForm {
         return $this;
     }
 
+    /**
+     * @param array $valueList
+     *
+     * @return $this
+     */
     public function addCustomerValues ( $valueList ) {
         if ( $valueList && is_array( $valueList ) ) {
             foreach ( $valueList as $valueName => $valueData ) {
@@ -223,25 +412,40 @@ class PaymentForm {
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function clearCustomerValues () {
         $this->customerValueList = array ();
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getCustomerValues () {
         return $this->customerValueList;
     }
 
+    /**
+     * @return $this
+     */
     public function enableFormAutoSubmit () {
         $this->formAutoSubmit = TRUE;
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function disableFormAutoSubmit () {
         $this->formAutoSubmit = FALSE;
         return $this;
     }
 
+    /**
+     * @return bool
+     */
     public function isEnabledFormAutoSubmit () {
         return !!$this->formAutoSubmit;
     }
@@ -250,6 +454,9 @@ class PaymentForm {
     ### Экшны и хелперы #######################################################
     #
 
+    /**
+     * @return bool
+     */
     public function validateData () {
         if ( preg_match( '/^[ZREUD]{1}\d{12}$/iu', $this->getSellerPurse() ) !== 1 ) {
             return FALSE;
@@ -266,6 +473,9 @@ class PaymentForm {
         return TRUE;
     }
 
+    /**
+     * @return string
+     */
     public function buildFormView () {
         $formTagId = ( !is_null( $this->getFormTagId() ) ) ? "id=\"{$this->getFormTagId()}\"" : NULL;
         $formAuthType = ( !is_null( $this->getAuthType() ) ) ? "?at={$this->getAuthType()}" : NULL;
