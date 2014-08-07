@@ -4,7 +4,6 @@ namespace iiifx\Component\Payment\Webmoney;
 
 /**
  * Class PaymentForm
- *
  * @package iiifx\Component\Payment\Webmoney
  */
 class PaymentForm {

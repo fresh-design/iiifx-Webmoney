@@ -7,9 +7,10 @@ use iiifx\Component\Payment\Webmoney\PaymentVerify;
 $testingMode = TRUE;
 
 $sellerPurse = 'Z145179295679';
+$sellerPassword = '###';
 $orderId = 1000;
 
-$webmoneyWerify = new PaymentVerify( $sellerPurse );
+$webmoneyWerify = new PaymentVerify( $sellerPurse, $sellerPassword );
 
 # Загружаем данные
 $webmoneyResponse->loadFromPOST();

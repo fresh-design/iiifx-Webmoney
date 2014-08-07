@@ -4,7 +4,6 @@ namespace iiifx\Component\Payment\Webmoney;
 
 /**
  * Class PaymentResponse
- *
  * @package iiifx\Component\Payment\Webmoney
  */
 class PaymentResponse {
@@ -27,23 +26,6 @@ class PaymentResponse {
      */
     protected $responseData;
 
-    /**
-     * @var int
-     */
-    private $LMI_PAYMENT_NO;
-    /**
-     * @var int
-     */
-    private $LMI_SYS_INVS_NO;
-    /**
-     * @var int
-     */
-    private $LMI_SYS_TRANS_NO;
-    /**
-     * @var string
-     */
-    private $LMI_SYS_TRANS_DATE;
-
     #
     ### Аццессоры #############################################################
     #
@@ -52,28 +34,28 @@ class PaymentResponse {
      * @return int
      */
     public function getPaymentId () {
-        return $this->LMI_PAYMENT_NO;
+        return $this->getResponseValue( 'LMI_PAYMENT_NO' );
     }
 
     /**
      * @return int
      */
     public function getPaymentInvoiseId () {
-        return $this->LMI_SYS_INVS_NO;
+        return $this->getResponseValue( 'LMI_SYS_INVS_NO' );
     }
 
     /**
      * @return int
      */
     public function getPaymentTransferId () {
-        return $this->LMI_SYS_TRANS_NO;
+        return $this->getResponseValue( 'LMI_SYS_TRANS_NO' );
     }
 
     /**
      * @return string
      */
     public function getTransferDate () {
-        return $this->LMI_SYS_TRANS_DATE;
+        return $this->getResponseValue( 'LMI_SYS_TRANS_DATE' );
     }
 
     /**

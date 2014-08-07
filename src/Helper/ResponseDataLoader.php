@@ -13,20 +13,22 @@ trait ResponseDataLoader {
 
     /**
      * @param array $arrayData
+     *
+     * @return $this
      */
     public function loadFromArray ( $arrayData ) {
         if ( $arrayData && is_array( $arrayData ) ) {
-            $this->responseData = $arrayData;
             foreach ( $this->fieldList as $fieldName => $fieldType ) {
                 if ( isset( $arrayData[ $fieldName ] ) ) {
                     $fieldValue = $arrayData[ $fieldName ];
                     if ( $fieldType === 'int' ) {
                         $fieldValue = (int) $fieldValue;
                     }
-                    $this->$fieldName = $fieldValue;
+                    $this->responseData[ $fieldName ] = $fieldValue;
                 }
             }
         }
+        return $this;
     }
 
     /**
@@ -37,5 +39,11 @@ trait ResponseDataLoader {
         return $this;
     }
 
+    public function getResponseValue ( $valueName ) {
+        if ( $valueName && isset( $this->responseData[ $valueName ] ) ) {
+            return $this->responseData[ $valueName ];
+        }
+        return NULL;
+    }
 
 }
