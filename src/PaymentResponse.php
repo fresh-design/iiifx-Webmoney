@@ -20,6 +20,11 @@ class PaymentResponse {
     );
 
     /**
+     * @var array
+     */
+    private $responseData;
+
+    /**
      * @var int
      */
     private $LMI_PAYMENT_NO;
@@ -68,6 +73,23 @@ class PaymentResponse {
         return $this->LMI_SYS_TRANS_DATE;
     }
 
+    public function getTransferTimestamp () {
+        if ( $this->getTransferDate() ) {
+            return strtotime( $this->getTransferDate() );
+        }
+        return NULL;
+    }
+
+    public function getCustomerValue ( $valueName ) {
+        if ( $valueName ) {
+            $valueName = "CUSTOMER_{$valueName}";
+            if ( isset( $this->responseData[ $valueName ] ) ) {
+                return $this->responseData[ $valueName ];
+            }
+        }
+        return NULL;
+    }
+
     #
     ### Экшны и хелперы #######################################################
     #
@@ -77,6 +99,7 @@ class PaymentResponse {
      */
     public function loadFromArray ( $arrayData ) {
         if ( $arrayData && is_array( $arrayData ) ) {
+            $this->responseData = $arrayData;
             foreach ( $this->fieldList as $fieldName => $fieldType ) {
                 if ( isset( $arrayData[ $fieldName ] ) ) {
                     $fieldValue = $arrayData[ $fieldName ];
