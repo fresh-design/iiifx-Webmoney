@@ -9,10 +9,13 @@ namespace iiifx\Component\Payment\Webmoney;
  */
 class PaymentResponse {
 
+    use Helper\ResponseDataLoader;
+    use Helper\ResponseCustomerFields;
+
     /**
      * @var array
      */
-    private $fieldList = array (
+    protected $fieldList = array (
         'LMI_PAYMENT_NO'     => 'int',
         'LMI_SYS_INVS_NO'    => 'int',
         'LMI_SYS_TRANS_NO'   => 'int',
@@ -22,7 +25,7 @@ class PaymentResponse {
     /**
      * @var array
      */
-    private $responseData;
+    protected $responseData;
 
     /**
      * @var int
@@ -81,51 +84,6 @@ class PaymentResponse {
             return strtotime( $this->getTransferDate() );
         }
         return NULL;
-    }
-
-    /**
-     * @param string $valueName
-     *
-     * @return string|null
-     */
-    public function getCustomerValue ( $valueName ) {
-        if ( $valueName ) {
-            $valueName = "CUSTOMER_{$valueName}";
-            if ( isset( $this->responseData[ $valueName ] ) ) {
-                return $this->responseData[ $valueName ];
-            }
-        }
-        return NULL;
-    }
-
-    #
-    ### Экшны и хелперы #######################################################
-    #
-
-    /**
-     * @param array $arrayData
-     */
-    public function loadFromArray ( $arrayData ) {
-        if ( $arrayData && is_array( $arrayData ) ) {
-            $this->responseData = $arrayData;
-            foreach ( $this->fieldList as $fieldName => $fieldType ) {
-                if ( isset( $arrayData[ $fieldName ] ) ) {
-                    $fieldValue = $arrayData[ $fieldName ];
-                    if ( $fieldType === 'int' ) {
-                        $fieldValue = (int) $fieldValue;
-                    }
-                    $this->$fieldName = $fieldValue;
-                }
-            }
-        }
-    }
-
-    /**
-     * @return $this
-     */
-    public function loadFromPOST () {
-        $this->loadFromArray( $_POST );
-        return $this;
     }
 
 }
