@@ -37,7 +37,7 @@ $webmoneyForm
 
 # Направление на конкретный тип оплаты
 $webmoneyForm->setAuthType( PaymentForm::AuthType_KeeperClassic );
-$webmoneyForm->setEInvoicingType( PaymentForm::EInvoicingType_Cards );
+//$webmoneyForm->setEInvoicingType( PaymentForm::EInvoicingType_Cards );
 
 # Параметры оплаты
 $webmoneyForm
@@ -45,22 +45,23 @@ $webmoneyForm
     ->setPaymentId( $orderId )
     ->setComment( "Оплата заказа #{$orderId}" );
 
+# Если нужно передать свои данные
+# Данные будут размещены в форме как CUSTOMER_{$valueName}
+$webmoneyForm->addCustomerValue( 'orderId', $orderId ); # CUSTOMER_orderId
+
 if ( $webmoneyForm->validateData() ) {
 
-    $webmoneyForm->setFormTagId( 'webmoney-form' );
+    # Задаем свой ID для формы, иначе будет сгенерирован случайный
+    //$webmoneyForm->setFormTagId( 'webmoney-form' );
+
+    # Включаем автоматическую отправку формы
+    $webmoneyForm->enableFormAutoSubmit();
 
     # Получаем данные формы для отображения
     $formView = $webmoneyForm->buildFormView();
 
     # Отображаем форму пользователю
     echo $formView;
-
-    # И сразу ее сабмитим, если нужно
-    echo "
-        <script type=\"text/javascript\">
-            $( function () { $( 'form#webmoney-form' ).submit(); } );
-        </script>";
-
 
 } else {
     # Ошибка данных
