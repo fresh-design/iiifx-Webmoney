@@ -73,6 +73,9 @@ class PaymentResponse {
         return $this->LMI_SYS_TRANS_DATE;
     }
 
+    /**
+     * @return int|null
+     */
     public function getTransferTimestamp () {
         if ( $this->getTransferDate() ) {
             return strtotime( $this->getTransferDate() );
@@ -80,6 +83,11 @@ class PaymentResponse {
         return NULL;
     }
 
+    /**
+     * @param string $valueName
+     *
+     * @return string|null
+     */
     public function getCustomerValue ( $valueName ) {
         if ( $valueName ) {
             $valueName = "CUSTOMER_{$valueName}";
