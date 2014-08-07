@@ -2,27 +2,6 @@
 
 namespace iiifx\Component\Payment\Webmoney;
 
-/*
-Контрольная подпись "Формы оповещения о платеже", которая
-используется для проверки целостности полученной информации.
-Подпись формируется путем MD5-шифрование строки, полученной
-путем склейки (без разделителей) значений следующих параметров
-точно в указанном порядке:
-
-LMI_PAYEE_PURSE
-LMI_PAYMENT_AMOUNT
-LMI_PAYMENT_NO
-LMI_MODE
-LMI_SYS_INVS_NO
-LMI_SYS_TRANS_NO
-LMI_SYS_TRANS_DATE
-LMI_SECRET_KEY (Secret Key)
-LMI_PAYER_PURSE
-LMI_PAYER_WM
-
-MD5-строка передаётся в верхнем регистре
-*/
-
 /**
  * Class PaymentVerify
  * @package iiifx\Component\Payment\Webmoney
@@ -51,22 +30,6 @@ class PaymentVerify {
     /**
      * @var array
      */
-    private $signatureFieldList = array (
-        'LMI_PAYEE_PURSE',
-        'LMI_PAYMENT_AMOUNT',
-        'LMI_PAYMENT_NO',
-        'LMI_MODE',
-        'LMI_SYS_INVS_NO',
-        'LMI_SYS_TRANS_NO',
-        'LMI_SYS_TRANS_DATE',
-        'LMI_SECRET_KEY',
-        'LMI_PAYER_PURSE',
-        'LMI_PAYER_WM',
-    );
-
-    /**
-     * @var array
-     */
     private $responseData;
 
     /**
@@ -87,10 +50,6 @@ class PaymentVerify {
         $this->setSellerPurse( $sellerPurse );
         $this->setSellerPassword( $sellerPassword );
     }
-
-    #
-    ### Аццессоры #############################################################
-    #
 
     /**
      * @param string $sellerPurse
@@ -123,15 +82,91 @@ class PaymentVerify {
         return $this->sellerPassword;
     }
 
-    #
-    ### Хелперы ###############################################################
-    #
+    /**
+     * @return int
+     */
+    public function getPaymentId () {
+        return $this->getResponseValue( 'LMI_PAYMENT_NO' );
+    }
+
+    /**
+     * @return int
+     */
+    public function getPaymentInvoiseId () {
+        return $this->getResponseValue( 'LMI_SYS_INVS_NO' );
+    }
+
+    /**
+     * @return int
+     */
+    public function getPaymentTransferId () {
+        return $this->getResponseValue( 'LMI_SYS_TRANS_NO' );
+    }
+
+    /**
+     * @return string
+     */
+    public function getTransferDate () {
+        return $this->getResponseValue( 'LMI_SYS_TRANS_DATE' );
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getTransferTimestamp () {
+        if ( $this->getTransferDate() ) {
+            return strtotime( $this->getTransferDate() );
+        }
+        return NULL;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getPayerPurse () {
+        return $this->getResponseValue( 'LMI_PAYER_PURSE' );
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getPayerWM () {
+        return $this->getResponseValue( 'LMI_PAYER_WM' );
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getPaymentAmount () {
+        return $this->getResponseValue( 'LMI_PAYMENT_AMOUNT' );
+    }
+
+    /**
+     * @return string
+     */
+    public function buildSignatureString () {
+        return
+            $this->getSellerPurse() .
+            $this->getCustomerValue( 'LMI_PAYMENT_AMOUNT' ) .
+            $this->getCustomerValue( 'LMI_PAYMENT_NO' ) .
+            $this->getCustomerValue( 'LMI_MODE' ) .
+            $this->getCustomerValue( 'LMI_SYS_INVS_NO' ) .
+            $this->getCustomerValue( 'LMI_SYS_TRANS_NO' ) .
+            $this->getCustomerValue( 'LMI_SYS_TRANS_DATE' ) .
+            $this->getSellerPassword() .
+            $this->getCustomerValue( 'LMI_PAYER_PURSE' ) .
+            $this->getCustomerValue( 'LMI_PAYER_WM' );
+    }
+
+    public function buildControlSignature () {
+        return strtoupper( md5( $this->buildSignatureString() ) );
+    }
 
     /**
      * @return bool
      */
-    public function verifyResponseSignature() {
-        return TRUE;
+    public function verifyResponseSignature () {
+        return ( $this->getResponseValue( 'LMI_HASH' ) === $this->buildControlSignature() );
     }
 
 }

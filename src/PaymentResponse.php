@@ -26,10 +26,6 @@ class PaymentResponse {
      */
     protected $responseData;
 
-    #
-    ### Аццессоры #############################################################
-    #
-
     /**
      * @return int
      */

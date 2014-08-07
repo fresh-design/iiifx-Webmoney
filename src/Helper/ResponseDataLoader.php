@@ -39,6 +39,11 @@ trait ResponseDataLoader {
         return $this;
     }
 
+    /**
+     * @param string $valueName
+     *
+     * @return string|null
+     */
     public function getResponseValue ( $valueName ) {
         if ( $valueName && isset( $this->responseData[ $valueName ] ) ) {
             return $this->responseData[ $valueName ];

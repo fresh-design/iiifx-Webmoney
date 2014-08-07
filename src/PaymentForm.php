@@ -129,10 +129,6 @@ class PaymentForm {
         $this->setSellerPurse( $sellerPurse );
     }
 
-    #
-    ### Аццессоры #############################################################
-    #
-
     /**
      * @return string
      */
@@ -448,10 +444,6 @@ class PaymentForm {
     public function isEnabledFormAutoSubmit () {
         return !!$this->formAutoSubmit;
     }
-
-    #
-    ### Экшны и хелперы #######################################################
-    #
 
     /**
      * @return bool
