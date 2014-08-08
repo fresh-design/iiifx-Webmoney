@@ -147,15 +147,15 @@ class PaymentVerify {
     public function buildSignatureString () {
         return
             $this->getSellerPurse() .
-            $this->getCustomerValue( 'LMI_PAYMENT_AMOUNT' ) .
-            $this->getCustomerValue( 'LMI_PAYMENT_NO' ) .
-            $this->getCustomerValue( 'LMI_MODE' ) .
-            $this->getCustomerValue( 'LMI_SYS_INVS_NO' ) .
-            $this->getCustomerValue( 'LMI_SYS_TRANS_NO' ) .
-            $this->getCustomerValue( 'LMI_SYS_TRANS_DATE' ) .
+            $this->getResponseValue( 'LMI_PAYMENT_AMOUNT' ) .
+            $this->getResponseValue( 'LMI_PAYMENT_NO' ) .
+            $this->getResponseValue( 'LMI_MODE' ) .
+            $this->getResponseValue( 'LMI_SYS_INVS_NO' ) .
+            $this->getResponseValue( 'LMI_SYS_TRANS_NO' ) .
+            $this->getResponseValue( 'LMI_SYS_TRANS_DATE' ) .
             $this->getSellerPassword() .
-            $this->getCustomerValue( 'LMI_PAYER_PURSE' ) .
-            $this->getCustomerValue( 'LMI_PAYER_WM' );
+            $this->getResponseValue( 'LMI_PAYER_PURSE' ) .
+            $this->getResponseValue( 'LMI_PAYER_WM' );
     }
 
     public function buildControlSignature () {
